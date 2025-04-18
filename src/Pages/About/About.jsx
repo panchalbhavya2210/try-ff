@@ -9,7 +9,7 @@ function About() {
         <meta property="og:description" content="Learn more about Try-FF." />
         <meta
           property="og:image"
-          content="https://try-ff.vercel.app/assets/og-about.jpg"
+          content="https://try-ff.vercel.app/og-about.jpg"
         />
         <meta property="og:url" content="https://try-ff.vercel.app/about" />
       </Helmet>

@@ -12,7 +12,7 @@ function Homepage() {
         />
         <meta
           property="og:image"
-          content="https://try-ff.vercel.app/assets/og-home.jpg"
+          content="https://try-ff.vercel.app/og-home.jpg"
         />
         <meta property="og:url" content="https://try-ff.vercel.app/" />
       </Helmet>
