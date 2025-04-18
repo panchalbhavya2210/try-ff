@@ -1,17 +1,24 @@
-import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const Homepage = () => {
+function Homepage() {
   return (
-    <section>
+    <>
       <Helmet>
-        <title>Homepage</title>
-        <meta name="description" content="Homepage" />
+        <title>Home | Try-FF</title>
+        <meta property="og:title" content="Welcome to the Home Page" />
+        <meta
+          property="og:description"
+          content="This is the homepage of Try-FF."
+        />
+        <meta
+          property="og:image"
+          content="https://try-ff.vercel.app/assets/og-home.jpg"
+        />
+        <meta property="og:url" content="https://try-ff.vercel.app/" />
       </Helmet>
-
-      <div className="hello">hello</div>
-    </section>
+      <h1>Home Page</h1>
+    </>
   );
-};
+}
 
 export default Homepage;

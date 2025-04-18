@@ -1,15 +1,21 @@
-import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const About = () => {
+function About() {
   return (
-    <section>
+    <>
       <Helmet>
-        <title>About</title>
-        <meta name="description" content="About" />
+        <title>About | Try-FF</title>
+        <meta property="og:title" content="About Try-FF" />
+        <meta property="og:description" content="Learn more about Try-FF." />
+        <meta
+          property="og:image"
+          content="https://try-ff.vercel.app/assets/og-about.jpg"
+        />
+        <meta property="og:url" content="https://try-ff.vercel.app/about" />
       </Helmet>
-    </section>
+      <h1>About Page</h1>
+    </>
   );
-};
+}
 
 export default About;
