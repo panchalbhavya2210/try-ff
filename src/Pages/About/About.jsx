@@ -6,7 +6,10 @@ function About() {
       <Helmet>
         <title>About | Try-FF</title>
         <meta property="og:title" content="About Try-FF" />
-        <meta property="og:description" content="Learn more about Try-FF." />
+        <meta
+          property="og:description"
+          content="Learn more about Try-FF.fffff"
+        />
         <meta
           property="og:image"
           content="https://try-ff.vercel.app/og-about.jpg"
