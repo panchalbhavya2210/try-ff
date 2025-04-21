@@ -7,7 +7,7 @@ exports.handler = async (event) => {
 
   const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
 
-  // Generate OG tags based on the path
+  // Default OG tags for home
   let og = {
     title: "Try-FF",
     desc: "Welcome to Try-FF",
@@ -15,6 +15,7 @@ exports.handler = async (event) => {
     url: "https://try-ff.vercel.app/",
   };
 
+  // If the path is /about, adjust the OG tags for the About page
   if (path.includes("/about")) {
     og = {
       title: "About Try-FF",
@@ -24,7 +25,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // If it's a bot, return the static HTML with OG tags
+  // If the request is from a bot, return static HTML with OG tags for either page
   if (isBot) {
     return {
       statusCode: 200,
@@ -44,12 +45,14 @@ exports.handler = async (event) => {
           </head>
           <body>
             <h1>${og.title}</h1>
+            <p>${og.desc}</p>
+            <img src="${og.image}" alt="Image" />
           </body>
         </html>`,
     };
   }
 
-  // For regular users, serve the React app (or redirect if necessary)
+  // For non-bot users, serve the content with the correct route
   return {
     statusCode: 200,
     headers: {
@@ -61,10 +64,16 @@ exports.handler = async (event) => {
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>${og.title}</title>
+            <meta property="og:title" content="${og.title}" />
+            <meta property="og:description" content="${og.desc}" />
+            <meta property="og:image" content="${og.image}" />
+            <meta property="og:url" content="${og.url}" />
           </head>
           <body>
-            <div id="root"></div>
-            <script src="https://your-cdn-link-or-local-js"></script> <!-- Link to your React app here -->
+            <h1>${og.title}</h1>
+            <p>${og.desc}</p>
+            <img src="${og.image}" alt="Image" />
+            <script src="path-to-your-react-app.js"></script> 
           </body>
         </html>`,
   };
