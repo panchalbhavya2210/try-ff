@@ -1,34 +1,30 @@
-console.log(111);
 exports.handler = async (event) => {
   const path = event.rawUrl;
   const userAgent = event.headers["user-agent"] || "";
-  console.log("Path: ", path); // Log the requested path
-  console.log("User Agent: ", userAgent); // Log the user agent
+
+  console.log("Path: ", path); // Log path for debugging
+  console.log("User-Agent: ", userAgent); // Log user-agent for debugging
 
   const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
-  console.log("Is Bot: ", isBot); // Log if it's detected as a bot
 
-  // Check if it's a bot, then return OG HTML
-  if (isBot) {
-    let og = {
-      title: "Try-FF",
-      desc: "Welcome to Try-FF",
-      image: "https://try-ff.vercel.app/og-home.jpg",
-      url: "https://try-ff.vercel.app/",
+  // Generate OG tags based on the path
+  let og = {
+    title: "Try-FF",
+    desc: "Welcome to Try-FF",
+    image: "https://try-ff.vercel.app/og-home.jpg",
+    url: "https://try-ff.vercel.app/",
+  };
+
+  if (path.includes("/about")) {
+    og = {
+      title: "About Try-FF",
+      desc: "Learn more about Try-FF.",
+      image: "https://try-ff.vercel.app/og-about.jpg",
+      url: "https://try-ff.vercel.app/about",
     };
+  }
 
-    if (path.includes("/about")) {
-      og = {
-        title: "About Try-FF",
-        desc: "Learn more about Try-FF.",
-        image: "https://try-ff.vercel.app/og-about.jpg",
-        url: "https://try-ff.vercel.app/about",
-      };
-    }
-
-    // Log OG tags
-    console.log("OG Tags: ", og);
-
+  if (isBot) {
     return {
       statusCode: 200,
       headers: {
@@ -52,7 +48,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // For non-bot users, redirect to the actual page
+  // If not a bot, redirect to the original path
   return {
     statusCode: 302,
     headers: {
