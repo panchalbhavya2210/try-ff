@@ -9,7 +9,10 @@
 [build.environment]
   NPM_FLAGS = "--legacy-peer-deps"
   CI = "false"  # Avoid unnecessary strict CI behaviors
+  
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/ssr-router"
+  status = 200
+  force = true
 
-[[edge_functions]]
-  path = "/og-preview/**"
-  function = "og"
