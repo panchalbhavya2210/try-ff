@@ -1,11 +1,13 @@
 exports.handler = async (event) => {
   const path = event.rawUrl;
   const userAgent = event.headers["user-agent"] || "";
+  console.log("Path: ", path); // Log the requested path
+  console.log("User Agent: ", userAgent); // Log the user agent
 
-  // Check if the user is a bot
   const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
+  console.log("Is Bot: ", isBot); // Log if it's detected as a bot
 
-  // If it's a bot, serve OG HTML
+  // Check if it's a bot, then return OG HTML
   if (isBot) {
     let og = {
       title: "Try-FF",
@@ -14,7 +16,6 @@ exports.handler = async (event) => {
       url: "https://try-ff.vercel.app/",
     };
 
-    // Example: if the path is /about, change the OG tags
     if (path.includes("/about")) {
       og = {
         title: "About Try-FF",
@@ -24,7 +25,9 @@ exports.handler = async (event) => {
       };
     }
 
-    // Return OG HTML for bot requests
+    // Log OG tags
+    console.log("OG Tags: ", og);
+
     return {
       statusCode: 200,
       headers: {
