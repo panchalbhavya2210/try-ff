@@ -1,13 +1,14 @@
 exports.handler = async (event) => {
-  const path = event.rawUrl;
-  const userAgent = event.headers["user-agent"] || "";
+  const path = event.path; // Use event.path to get the requested path
+  const userAgent = event.headers["user-agent"] || ""; // Get user-agent from headers
 
-  console.log("Path: ", path); // Log path for debugging
-  console.log("User-Agent: ", userAgent); // Log user-agent for debugging
+  console.log("Path:", path); // Log path for debugging
+  console.log("User-Agent:", userAgent); // Log user-agent for debugging
 
+  // Simple regex to detect bots
   const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
 
-  // Generate OG tags based on the path
+  // Default OG tags
   let og = {
     title: "Try-FF",
     desc: "Welcome to Try-FF",
@@ -15,6 +16,7 @@ exports.handler = async (event) => {
     url: "https://try-ff.vercel.app/",
   };
 
+  // Modify OG tags if the path includes '/about'
   if (path.includes("/about")) {
     og = {
       title: "About Try-FF",
@@ -24,11 +26,12 @@ exports.handler = async (event) => {
     };
   }
 
+  // If it's a bot, return the OG tags in HTML
   if (isBot) {
     return {
       statusCode: 200,
       headers: {
-        "Content-Type": "text/html",
+        "Content-Type": "text/html", // Set content type to HTML
       },
       body: `<!DOCTYPE html>
         <html lang="en">
@@ -48,11 +51,11 @@ exports.handler = async (event) => {
     };
   }
 
-  // If not a bot, redirect to the original path
+  // If it's not a bot, redirect to the original path
   return {
     statusCode: 302,
     headers: {
-      Location: path,
+      Location: path, // Redirect to the original path
     },
   };
 };
