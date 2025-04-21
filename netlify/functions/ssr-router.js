@@ -7,7 +7,7 @@ exports.handler = async (event) => {
 
   const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
 
-  // Default Open Graph (OG) tags
+  // Generate OG tags based on the path
   let og = {
     title: "Try-FF",
     desc: "Welcome to Try-FF",
@@ -15,7 +15,6 @@ exports.handler = async (event) => {
     url: "https://try-ff.vercel.app/",
   };
 
-  // Modify OG tags for /about route
   if (path.includes("/about")) {
     og = {
       title: "About Try-FF",
@@ -25,8 +24,8 @@ exports.handler = async (event) => {
     };
   }
 
-  // If the path is /about or similar, serve the HTML with OG tags
-  if (isBot && path.includes("/about")) {
+  // If it's a bot, return the static HTML with OG tags
+  if (isBot) {
     return {
       statusCode: 200,
       headers: {
@@ -42,45 +41,31 @@ exports.handler = async (event) => {
             <meta property="og:description" content="${og.desc}" />
             <meta property="og:image" content="${og.image}" />
             <meta property="og:url" content="${og.url}" />
-            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
           </head>
           <body>
             <h1>${og.title}</h1>
-            <p>${og.desc}</p>
           </body>
         </html>`,
     };
   }
 
-  // Avoid redirect loop for /about or any other paths you want to render directly
-  if (path.includes("/about")) {
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "text/html",
-      },
-      body: `<!DOCTYPE html>
+  // For regular users, serve the React app (or redirect if necessary)
+  return {
+    statusCode: 200,
+    headers: {
+      "Content-Type": "text/html",
+    },
+    body: `<!DOCTYPE html>
         <html lang="en">
           <head>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>About Try-FF</title>
-            <meta name="description" content="Learn more about Try-FF" />
-            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+            <title>${og.title}</title>
           </head>
           <body>
-            <h1>About Try-FF</h1>
-            <p>Learn more about Try-FF.</p>
+            <div id="root"></div>
+            <script src="https://your-cdn-link-or-local-js"></script> <!-- Link to your React app here -->
           </body>
         </html>`,
-    };
-  }
-
-  // For other paths (non /about), redirect to the original path
-  return {
-    statusCode: 302,
-    headers: {
-      Location: path,
-    },
   };
 };
