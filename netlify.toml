@@ -10,6 +10,9 @@
   NPM_FLAGS = "--legacy-peer-deps"
   CI = "false"  # Avoid unnecessary strict CI behaviors
   
+[build]
+  functions = "netlify/functions"
+
 [[redirects]]
   from = "/*"
   to = "/.netlify/functions/ssr-router"
