@@ -1,14 +1,13 @@
 exports.handler = async (event) => {
-  const path = event.path; // Use event.path to get the requested path
-  const userAgent = event.headers["user-agent"] || ""; // Get user-agent from headers
+  const path = event.rawUrl;
+  const userAgent = event.headers["user-agent"] || "";
 
-  console.log("Path:", path); // Log path for debugging
-  console.log("User-Agent:", userAgent); // Log user-agent for debugging
+  console.log("Path: ", path); // Log path for debugging
+  console.log("User-Agent: ", userAgent); // Log user-agent for debugging
 
-  // Simple regex to detect bots
   const isBot = /bot|crawl|slurp|spider|mediapartners/i.test(userAgent);
 
-  // Default OG tags
+  // Default Open Graph (OG) tags
   let og = {
     title: "Try-FF",
     desc: "Welcome to Try-FF",
@@ -16,7 +15,7 @@ exports.handler = async (event) => {
     url: "https://try-ff.vercel.app/",
   };
 
-  // Modify OG tags if the path includes '/about'
+  // Modify OG tags for /about route
   if (path.includes("/about")) {
     og = {
       title: "About Try-FF",
@@ -26,12 +25,12 @@ exports.handler = async (event) => {
     };
   }
 
-  // If it's a bot, return the OG tags in HTML
-  if (isBot) {
+  // If the path is /about or similar, serve the HTML with OG tags
+  if (isBot && path.includes("/about")) {
     return {
       statusCode: 200,
       headers: {
-        "Content-Type": "text/html", // Set content type to HTML
+        "Content-Type": "text/html",
       },
       body: `<!DOCTYPE html>
         <html lang="en">
@@ -43,19 +42,45 @@ exports.handler = async (event) => {
             <meta property="og:description" content="${og.desc}" />
             <meta property="og:image" content="${og.image}" />
             <meta property="og:url" content="${og.url}" />
+            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
           </head>
           <body>
             <h1>${og.title}</h1>
+            <p>${og.desc}</p>
           </body>
         </html>`,
     };
   }
 
-  // If it's not a bot, redirect to the original path
+  // Avoid redirect loop for /about or any other paths you want to render directly
+  if (path.includes("/about")) {
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "text/html",
+      },
+      body: `<!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>About Try-FF</title>
+            <meta name="description" content="Learn more about Try-FF" />
+            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+          </head>
+          <body>
+            <h1>About Try-FF</h1>
+            <p>Learn more about Try-FF.</p>
+          </body>
+        </html>`,
+    };
+  }
+
+  // For other paths (non /about), redirect to the original path
   return {
     statusCode: 302,
     headers: {
-      Location: path, // Redirect to the original path
+      Location: path,
     },
   };
 };
