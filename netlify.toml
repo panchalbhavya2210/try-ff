@@ -9,3 +9,7 @@
 [build.environment]
   NPM_FLAGS = "--legacy-peer-deps"
   CI = "false"  # Avoid unnecessary strict CI behaviors
+
+[[edge_functions]]
+  path = "/og-preview/**"
+  function = "og"
