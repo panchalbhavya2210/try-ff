@@ -2,7 +2,6 @@
   command = "npm install --legacy-peer-deps && npm run build"
   publish = "dist"  # or "dist" or "out", depending on your project
   node_version = "18"
-  functions = "netlify/functions"
 
 
 [context.production.environment]
@@ -12,12 +11,4 @@
   NPM_FLAGS = "--legacy-peer-deps"
   CI = "false"  # Avoid unnecessary strict CI behaviors
   
-
-[[redirects]]
-  from = "/about"
-  to = "/.netlify/functions/ssr-router/about"
-  status = 200
-  force = true
-
-
 
