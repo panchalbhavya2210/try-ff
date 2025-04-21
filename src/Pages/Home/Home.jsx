@@ -17,6 +17,7 @@ function Homepage() {
         <meta property="og:url" content="https://try-ff.vercel.app/" />
       </Helmet>
       <h1>Home Page</h1>
+      <a href="/about"></a>
     </>
   );
 }
