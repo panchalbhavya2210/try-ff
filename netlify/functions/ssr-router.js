@@ -1,3 +1,4 @@
+console.log(111);
 exports.handler = async (event) => {
   const path = event.rawUrl;
   const userAgent = event.headers["user-agent"] || "";
